@@ -10,6 +10,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { CustomerResponse } from '../../sales/customer-list-to-sales2/customer-list-to-sales2.component';
 import { SalesService } from 'src/app/services/sales.service';
 import { Observable } from 'rxjs';
+import { BaseResponse } from '@shared/models/base-api-response.interface';
 
 @Component({
   selector: 'vex-payments',
@@ -73,10 +74,14 @@ export class PaymentsComponent implements OnInit {
 
     let balanceFlag: number = 0;
     let quantity: number = 0;
-    this.balance = p.balance - parseInt(p.value, 10);
-    quantity = parseInt(p.value, 10);
-    balanceFlag = p.balance;
-
+    quantity = parseFloat(p.value);
+    balanceFlag = parseFloat(p.balance.toString());
+    this.balance = Math.round((balanceFlag - quantity) * 100) / 100;
+    
+    //console.log('Saldo '+balanceFlag);
+    //console.log('Abono '+p.value+', abono convertido '+quantity);
+    //console.log('Nuevo saldo '+this.balance);
+    
     if (p.value !== '' && quantity >= 0 && p.value != undefined && p.paymentDate != '' && p.paymentDate != undefined) {
 
       this.Payment = {
@@ -103,39 +108,43 @@ export class PaymentsComponent implements OnInit {
         return;
       }
       else {
+        let err:boolean=false;
+
           const pagoOk = async () => {
             try {
               await this._paymentService.addPayment(this.Payment).toPromise();    
-              console.log('*1*');  // Indica que la operación ha sido exitosa.
             } catch (error) {
-              console.log(error);  // Maneja cualquier error que ocurra durante la operación
+              err = true;
+              console.log('error');  // Maneja cualquier error que ocurra durante la operación
             }
           };
-
-          pagoOk().then(() => { // Esta función se ejecutará después de que la operación asíncrona haya terminado
-            console.log('*2*'); 
-            let pre: Sales =
-            {
-              customerId: this.customerId,
-              saleId: p.saleId,
-              registerDate: p.registerDate,
-              subTotal: p.subTotal,
-              total: p.total,
-              balance: this.balance,//solo se actualiza este
-              closed: true,
-              paid: this.balance == 0,
-              state: 1
-            }
-  
-            const observable = this._saleService.updatePreSale(pre).subscribe(() => {
-              observable.unsubscribe();
-              this.Message('Pago registrado correctamente')
-              p.paymentDate = '';
-              p.value = '';
-              this.updateSalesWithPayment(p, this.balance);
+          
+            pagoOk().then(() => { // Esta función se ejecutará después de que la operación asíncrona haya terminado
+              
+              if(!err){ //si hay un error no actualiza saldos
+                let pre: Sales =
+              {
+                customerId: this.customerId,
+                saleId: p.saleId,
+                registerDate: p.registerDate,
+                subTotal: p.subTotal,
+                total: p.total,
+                balance: this.balance,//solo se actualiza este
+                closed: true,
+                paid: this.balance == 0,
+                state: 1
+              }
+    
+              const observable = this._saleService.updatePreSale(pre).subscribe(() => {
+                observable.unsubscribe();
+                this.Message('Pago registrado correctamente')
+                p.paymentDate = '';
+                p.value = '';
+                this.updateSalesWithPayment(p, this.balance);
+              });
+              } 
+              else {  this.Message('Hubo un error en la solicitud, no se guardaron los cambios'); }
             });
-          });
-
       }
     }
   }

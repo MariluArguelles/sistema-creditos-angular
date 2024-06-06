@@ -30,15 +30,11 @@ export class PaymentService {
     const sql = `${env.api}${endpoint.PAYMENT_REGISTER}`;
     return this._http.post(sql, data).pipe(
       map((resp: BaseResponse) => {
-        return resp
+        return resp;
       })
-    )
+    );
+
   }
 
- /* updatePreSale(data: Sales): Observable<any> {
-    const sql = `${env.api}${endpoint.SALE_EDIT}${data.saleId}`;
-    console.log('**sql** '+JSON.stringify(data))
-    return this._http.put(sql, data);
-  }*/
 
 }
