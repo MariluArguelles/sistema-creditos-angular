@@ -1,0 +1,172 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+
+<div class="w-full h-full flex flex-col">
+    <div class="px-gutter pt-6 pb-20 bg-primary flex-none">
+        <div class="flex items-center justify-between" vexContainer>
+            <h2 class="headline text-primary-contrast m-0 flex items-center w-full max-w-xxxl mr-6">
+                <ic-icon @scaleIn [icon]="component.icCategory" class="hidden sm:block"></ic-icon>
+                <span @fadeInRight class="ml-4 block">Punto de venta</span>
+            </h2>
+        </div>
+    </div>
+    <div class="-mt-14 pt-0 overflow-hidden flex" vexContainer>
+        <mat-drawer-container class="bg-transparent flex-auto flex">
+            <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
+                <div class="card h-full overflow-hidden flex-auto">
+                    <div>
+                        <mat-card style="padding:0px 20px 0px 25px; margin-bottom:0px;">
+                            <div class="row" style="padding-bottom: 0; margin-bottom:0; ">
+                                <!-- <div class="col-sm-7 p-3 bg-white" style="border:1px solid #000; padding: 0px; "> -->
+                                <div class="col-sm-7 bg-white" style=" padding: 0px; ">
+                                    <mat-card-content style="padding-top: 10px;">
+                                        <span style=" margin-left: 10px; display:flex;">Cliente: {{cliente}}</span>
+                                        <span style="margin-left: 10px;  display:flex;">ID: {{customerId}}</span>
+                                    </mat-card-content>
+                                    <!-- <input id="hiddenNew" #hiddenNew  type="hidden" value="true"> -->
+                                    <input id="hiddenClosed" #hiddenClosed type="hidden" value="false">
+                                    <mat-card-content
+                                        style="padding:0px; padding-bottom: 0px; margin-bottom: 0px;  margin-right: 30px;">
+                                        <app-search-box-multiple [searchOptions]="component.searchOptions"
+                                            (search)="search($event)">
+                                        </app-search-box-multiple>
+                                    </mat-card-content>
+                                </div>
+
+                                <div class="col-sm-5 bg-white" style="padding: 0px;">
+                                    <ng-container
+                                        *ngIf="{total:total$ | async, quantity: quantity$ | async} as dataCart">
+                                        <mat-card-content
+                                            style="padding-top: 10px; margin-bottom: 0px; padding-right: 20px; color:#000; ">
+
+                                            <span style="display: block;"> Total de artículos:{{ dataCart.quantity }}
+                                            </span>
+                                            <span style="display: block;"> Total: {{dataCart.total}}</span>
+                                            <!-- <span> Fecha: {{ this.fecha2 | date:'dd-MM-yyyy HH:mm' }} </span> -->
+                                            <span> Fecha: {{ this.fecha }} </span>
+                                            <mat-card-actions align="end">
+                                                <button #miBoton mat-raised-button color="primary" [disabled]="closed"
+                                                    (click)="onGuardarSalir();">Guardar y salir</button>
+                                                <span style="margin-right: 20px;"></span>
+                                                <!-- <button
+                                                    mat-raised-button
+                                                    color="primary"
+                                                >Cancelar</button> -->
+                                            </mat-card-actions>
+                                        </mat-card-content>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </mat-card>
+
+                        <div class="row">
+                            <div style=" height:calc(60vh - 40px); display:block"
+                                class="col-sm-8 p-3 bg-light text-white">
+                                
+                                <!-- <app-list-table (rowClick)="rowClick($event)" [service]="_productService"
+                                    [columns]="component.tableColumns" [sortBy]="component.initialSort"
+                                    [sortDir]="component.initialSortDir" [getInputs]="component.getInputs">
+                                </app-list-table> -->
+                                <div class="table-container">
+                                    <table id="tabla1" mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" matSort
+                                      matSortDisableClear [matSortActive]="this.component.initialSort"
+                                      [matSortDirection]="this.component.initialSortDir">
+                                      <!-- productId Column -->
+                                      <ng-container matColumnDef="productId" >
+                                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                                        <td  mat-cell *matCellDef="let element">
+                                          {{element.productId}}
+                                        </td>
+                                      </ng-container>
+                        
+                                      <!-- description Column -->
+                                      <ng-container matColumnDef="description">
+                                        <th mat-header-cell *matHeaderCellDef>PRODUCTO</th>
+                                        <td mat-cell *matCellDef="let element">
+                                          {{element.description}}
+                                        </td>
+                                      </ng-container>
+                        
+                                      <!-- brand Column -->
+                                      <ng-container matColumnDef="brand">
+                                        <th mat-header-cell *matHeaderCellDef>MARCA</th>
+                                        <td mat-cell *matCellDef="let element">
+                                          {{element.brand}}
+                                        </td>
+                                      </ng-container>
+                        
+                                      <!-- salesCost Column -->
+                                      <ng-container matColumnDef="salesCost">
+                                        <th mat-header-cell *matHeaderCellDef>PRECIO</th>
+                                        <td mat-cell *matCellDef="let element">
+                                          {{element.salesCost}}
+                                        </td>
+                                      </ng-container>
+                        
+                                      <tr mat-header-row 
+                                        *matHeaderRowDef="displayedColumns"></tr>
+                                      <tr class="mat-row h-8" mat-row (click)="rowClick(row);" *matRowDef="let row; columns: displayedColumns;">
+                                      </tr>
+                                    </table>
+                                    <mat-paginator [class.hidden]="!dataSource.filteredData.length"
+                                       [pageSize]="paginatorOptions.pageSize"
+                                      [length]="paginatorOptions.pageLength" [showFirstLastButtons]="true"></mat-paginator>
+                                    <div *ngIf="dataSource.filteredData.length===0" class="flex h-full flex-col justify-center items-center">
+                                      <img class="m-12 h-64" src="../../../../assets/img/illustrations/idea.svg">
+                                      <h2 class="headline m-0 text-center">No hay resultados en esta búsqueda</h2>
+                                    </div>
+                                  </div>
+                                
+                            </div>
+                            <!-- comienza la lista de compra -->
+                            <div style="height:calc(60vh - 40px);  padding: 0px;" class="col-sm-4 bg-white">
+                                <mat-card-header
+                                    style=" color:white;padding-bottom: 10px; font-size: 20px; background-color: rgba(var(--bs-primary-rgb),var(--bs-bg-opacity))!important;opacity: 1--;">
+                                    Lista de compra
+                                </mat-card-header>
+                                <div style="overflow:scroll;height:calc(60vh - 40px);  padding: 0px;">
+                                    <table mat-table [dataSource]="dataSource2">
+                                        <!--- Note that these columns can be defined in any order.
+                                              The actual rendered columns are set as a property on the row definition" -->
+                                        <!-- id Column -->
+                                        <ng-container matColumnDef="id">
+                                            <th mat-header-cell *matHeaderCellDef [style.display]="'none'"> id </th>
+                                            <td mat-cell *matCellDef="let element" [style.display]="'none'">
+                                                {{element.id}} </td>
+                                        </ng-container>
+
+                                        <!-- Quantity Column -->
+                                        <ng-container matColumnDef="Quantity">
+                                            <th mat-header-cell *matHeaderCellDef> </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="ProductDescription">
+                                            <th mat-header-cell *matHeaderCellDef> Descripción</th>
+                                            <td mat-cell *matCellDef="let element"> {{element.productDescription}} </td>
+                                        </ng-container>
+
+                                        <!-- Price Column -->
+                                        <ng-container matColumnDef="Price">
+                                            <th mat-header-cell *matHeaderCellDef> Price </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="Subtotal">
+                                            <th mat-header-cell *matHeaderCellDef> Subtotal </th>
+                                            <td mat-cell *matCellDef="let element"> {{ element.quantity *
+                                                element.price}} </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                        <tr mat-row  class="mat-row h-8" 
+                                            *matRowDef="let row; columns: displayedColumns2;"></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
+</div>

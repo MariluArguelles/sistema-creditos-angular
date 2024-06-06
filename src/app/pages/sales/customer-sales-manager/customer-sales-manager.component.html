@@ -1,0 +1,46 @@
+
+<div style="width: 100px; margin:0 auto; padding:15px; " > 
+    <button mat-raised-button color="primary" (click)="nuevaVenta()">Crear nueva venta</button>
+</div>
+
+<div class="w-full h-full flex flex-col">
+    <div class="px-gutter pt-6 pb-20 bg-primary flex-none">
+        <div
+            class="flex items-center justify-between"
+            vexContainer
+        >
+            <h2 class="headline text-primary-contrast m-0 flex items-center w-full max-w-xxxl mr-6">
+                <ic-icon
+                    @scaleIn
+                    [icon]="component.icCustomer"
+                    class="hidden sm:block"
+                ></ic-icon>
+                <span
+                    @fadeInRight
+                    class="ml-4 block"
+                >Seleccione la venta o elija crear una nueva</span>
+            </h2>
+        </div>
+    </div>
+    <div
+        class="-mt-14 pt-0 overflow-hidden flex"
+        vexContainer
+    >
+        <mat-drawer-container class="bg-transparent flex-auto flex">
+            <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
+                <div class="card h-full overflow-hidden flex-auto">
+
+                    <app-list-table
+                        (rowClick)="rowClick($event)"
+                        [columns]="component.tableColumns"
+                        [service]="_salesService"
+                        [sortBy]="component.initialSort"
+                        [sortDir]="component.initialSortDir"
+                        [getInputs]="component.getInputs"
+                    >
+                    </app-list-table>
+                </div>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
+</div>

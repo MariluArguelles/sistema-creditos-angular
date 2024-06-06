@@ -1,0 +1,71 @@
+<form (ngSubmit)="UserSave()" [formGroup]="form">
+    <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 class="headline m-0  text-xl text-accent" fxFlex="auto">
+            <strong>Gestión de Usuario</strong>
+        </h2>
+        <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+            <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+    </div>
+    <mat-dialog-content>
+
+        <div fxLayout="row" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Nombre de usuario</mat-label>
+                <input matInput formControlName="userName" maxlength="30">
+                <mat-error *ngIf="form.get('userName').hasError('required')">
+                    Campo nombre de usuario es requerido.
+                </mat-error>
+                <mat-error *ngIf="form.get('userName')?.hasError('maxlength')">
+                    El nombre no puede exceder de 30 caracteres.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field *ngIf="mostrarPassword" appearance="outline" fxFlex="50">
+                <mat-label>Password</mat-label>
+                <input  type="password" matInput formControlName="password">
+                <!-- <mat-error *ngIf="form.get('password').hasError('required')">
+                    Campo contraseña es requerido.
+                </mat-error> -->
+                
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="16px">           
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>Correo Electrónico</mat-label>
+                <input matInput formControlName="email" maxlength="30">
+                <mat-error *ngIf="form.get('email').hasError('required')">
+                    Campo correo electrónico es requerido.
+                </mat-error>
+                <mat-error *ngIf="form.get('email')?.hasError('maxlength')">
+                    El correo electrónico no puede exceder de 30 caracteres.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- {{ mostrarPassword ? 'Si ':'No'  }} -->
+        <div fxLayout="row" fxLayoutGap="16px">
+        <mat-label>Tipo de autentificación: {{ this.authType }}</mat-label> 
+        </div>
+        <br>
+
+        <div fxLayout="row" fxLayoutGap="16px">
+            <mat-form-field appearance="outline" fxFlex="50">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="state">
+                    <mat-option *ngFor="let state of configs.statesSelect" [value]="state.value">
+                        {{state.label}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('state').hasError('required')">
+                    Campo estado es requerido.
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">CANCELAR</button>
+        <button color="purple" class="bg-accent text-accent-contrast" mat-button type="submit"
+            [disabled]="!form.valid">{{data ? 'ACTUALIZAR':'GUARDAR'}}</button>
+    </mat-dialog-actions>
+</form>

@@ -1,0 +1,123 @@
+<div class="w-full h-full flex flex-col">
+    <div class="px-gutter pt-6 pb-20 bg-primary flex-none">
+        <div class="flex items-center justify-between" vexContainer>
+            <h2 class="headline text-primary-contrast m-0 flex items-center w-full max-w-xxxl mr-6">
+                <span @fadeInRight class="ml-4 block">Lista de cuentas activas</span>
+            </h2>
+        </div>
+    </div>
+    <div>
+        <mat-card-content style="padding-top: 10px;">
+            <span style=" margin-left: 10px; display:flex;">Cliente: {{cliente}}</span>
+            <span style="margin-left: 10px;  display:flex;">ID: {{customerId}}</span>
+        </mat-card-content>
+
+        <mat-grid-list cols="1" rowHeight="2:1">
+
+            
+            <div class="h-full" [class.overflow-auto]="sales?.length > 0">
+                <ng-container *ngFor="let item of sales; let i = index">
+                    <div>
+                        <ng-container *ngIf="item.closed" class="contenedorCol">
+
+                            <mat-card-header [style.background-color]="item.paid ? '#cccc00' : 'darkblue'"
+                                style="color:bisque;padding-bottom: 10px; padding-top: 10px;">
+                                <span style="margin-left: 10px; margin-right: 10px;">
+                                    Fecha:
+                                    {{ item.auditCreateDate}}
+                                </span>
+                            </mat-card-header>
+                            <div *ngIf="item.paid">
+                                La cuenta ya está pagada.
+                            </div>
+                            <mat-card class="mat-card div-arriba">
+                                <div class="contenedorRow">
+                                    <mat-card-content class="div-Left" style="padding:0px 0px;">
+                                        <table class="styled-table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Descripción</th>
+                                                    <th>Precio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item2 of item.saleItems" class="active-row">
+                                                    <td>{{ item2.quantity }}</td>
+                                                    <td>{{ item2.description }} </td>
+                                                    <td>${{item2.price}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td style="text-align: right; margin-right: 3px; ">Total:</td>
+                                                    <td>
+                                                        {{ item.total }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </mat-card-content>
+
+                                    <mat-card-content class="div-Right" style="padding:0px 0px;">
+                                        <table class="styled-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pago</th>
+                                                    <th>Saldo</th>
+                                                    <th>Fecha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item2 of item.payments" class="active-row">
+                                                    <td>${{ item2.quantity }}</td>
+                                                    <td>${{item2.balance}}</td>
+                                                    <td>{{item2.paymentDate | date:'dd-MM-yyyy'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </mat-card-content>
+                                </div>
+                            </mat-card>
+
+                            <div class="div-abajo contenedorRow">
+                                <div class="div-LeftDown">
+
+                                </div>
+                                <div class="div-RightDown">
+
+                                    <app-botton-pdf-standar *ngIf="item.saleItems.length > 0" [url]="'Sale/GetBill/'+item.saleId"
+                                        [getInputs]="getInputs" [filename]="'Factura_'+this.customerId+'_'+item.saleId">
+                                    </app-botton-pdf-standar>
+
+                                    <ng-container  *ngIf="!item.paid && item.saleItems.length > 0">
+                                            <span style="margin-left: 20px; margin-right: 20px;">Fecha</span>
+                                            <input [name]="'paymentDate' + i" [(ngModel)]="item.paymentDate" matInput [matDatepicker]="picker"
+                                                style="height:30px; width: 130px; margin-right:3px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);"
+                                                placeholder="Selecciona una fecha">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                            <input [name]="'cantidad' + i" [(ngModel)]="item.value" matInput placeholder="0"
+                                             type="number" max="9999.99"
+                                            style="height:30px; width: 80px; margin-right: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);">
+
+                                            <button mat-raised-button (click)="onPay(item);" color="primary" style="margin-right: 20px;">Abonar</button>
+                                        </ng-container>
+
+                                    <span style="margin-right: 20px;height:30px;">Total:
+                                        ${{item.total}}</span><span>Saldo: ${{item.balance}}</span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <div *ngIf="sales?.length === 0" class="flex h-full flex-col justify-center items-center">
+                    <img class="m-12 h-64" src="../../../../assets/img/illustrations/idea.svg">
+                    <h2 class="headline m-0 text-center">No hay resultados en esta búsqueda</h2>
+                </div>
+            </div>
+
+
+        </mat-grid-list>
+    </div>
+</div>

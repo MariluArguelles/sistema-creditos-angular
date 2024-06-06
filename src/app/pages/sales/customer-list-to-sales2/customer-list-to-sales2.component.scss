@@ -1,0 +1,30 @@
+.demo-table {
+    width: 100%;
+  }
+  
+  #tabla1 .mat-header-row{
+    background-color: lightgrey;
+  
+  }
+
+  #tabla1 .mat-header-row th{
+    font-size:12px;  
+  }
+ 
+  #tabla1 .mat-row {
+    border-bottom: 1px solid transparent !important;
+    border-top: 1px solid transparent !important;
+    cursor: pointer !important;
+    font-size:20px !important;  
+  }
+  
+  #tabla1  .mat-row:hover  {
+    margin-top:30px;
+    border-top:30px solid gray; 
+    background-color:lightgray;
+  }
+  
+  
+  .demo-row-is-clicked {
+    font-weight: bold !important;
+  }

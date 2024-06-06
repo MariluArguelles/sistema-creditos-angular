@@ -1,0 +1,98 @@
+<div class="w-full h-full flex flex-col">
+  <div class="px-gutter pt-6 pb-20 bg-primary flex-none">
+    <div class="flex items-center justify-between" vexContainer>
+      <h2 class="headline text-primary-contrast m-0 flex items-center w-full max-w-xxxl mr-6">
+        <ic-icon @scaleIn [icon]="component.icCustomer" class="hidden sm:block"></ic-icon>
+        <span @fadeInRight class="ml-4 block">Seleccione un cliente</span>
+      </h2>
+      <div class="flex items-center justify-end w-full">
+        <app-search-box-multiple [searchOptions]="component.searchOptions"
+          (search)="search($event)"></app-search-box-multiple>
+      </div>
+    </div>
+  </div>
+  <div class="-mt-14 pt-0 overflow-hidden flex" vexContainer>
+    <mat-drawer-container class="bg-transparent flex-auto flex">
+      <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
+        <div class="card h-full overflow-hidden flex-auto">
+          <ngx-spinner [fullScreen]="false" bdColor="rgb(70,84,153,0.3)" size="medium" name="modal-table"
+            color="#7084E3">
+          </ngx-spinner>
+          <div class="h-full" [class.overflow-auto]="dataSource.filteredData.length">
+            <table id="tabla1" mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" matSort
+              matSortDisableClear [matSortActive]="this.component.initialSort"
+              [matSortDirection]="this.component.initialSortDir">
+              <!-- Position Column -->
+              <ng-container matColumnDef="customerId" >
+                <th mat-header-cell *matHeaderCellDef>NO.</th>
+                <td  mat-cell *matCellDef="let element">
+                  {{element.customerId}}
+                </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>NOMBRES</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.name}}
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="lastName1">
+                <th mat-header-cell *matHeaderCellDef>AP. PATERNO</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.lastName1}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="lastName2">
+                <th mat-header-cell *matHeaderCellDef>AP MATERNO</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.lastName2}}
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="birthDate">
+                <th mat-header-cell *matHeaderCellDef>Fecha Nac</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.birthDate}}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr class="mat-row h-8" mat-row (click)="rowClick(row);" *matRowDef="let row; columns: displayedColumns;">
+              </tr>
+            </table>
+            <mat-paginator [class.hidden]="!dataSource.filteredData.length"
+              [pageSizeOptions]="paginatorOptions.pageSizeOptions" [pageSize]="paginatorOptions.pageSize"
+              [length]="paginatorOptions.pageLength" [showFirstLastButtons]="true"></mat-paginator>
+            <div *ngIf="dataSource.filteredData.length===0" class="flex h-full flex-col justify-center items-center">
+              <img class="m-12 h-64" src="../../../../assets/img/illustrations/idea.svg">
+              <h2 class="headline m-0 text-center">No hay resultados en esta búsqueda</h2>
+            </div>
+          </div>
+
+          <!-- [class.hidden]="!dataSource.filteredData.length" -->
+
+
+          <div class="h-24 flex gap-4 justify-between items-center flex-grap mx-10 my-2">
+            <div class="flex gap-3" *ngIf="dataSource.filteredData.length !== 0">
+              <ng-container>
+
+              </ng-container>
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+-----------------------
+ng build --configuration production
+para publicar 
+-----------------------
+ng g s shared/services/alert
+ng g s services/category --skip-tests true
+ng g m pages/category --routing
+ng g c pages/category/category-list --skip-tests true
+
+ng g s services/user --skip-tests true
+ng g m pages/user --routing
+ng g c pages/user/user-list --skip-tests true
+ng g c pages/user/user-manage --skip-tests true
+
+login con google
+npm install --save @types/google-one-tap
+
+ERRORES ERROR
+Error: [Iconify]: No icon provided at IconDirective.getIcon
+(visurel-iconify-angular.js:457:19)
+at IconDirective.updateIcon (visurel-iconify-angular.js:450:27) at IconDirective.ngOnChanges
+(visurel-iconify-angular.js:446:18) Sólo ng build arregló el error de iconos
+
+<ic-icon
+@scaleIn
+[icon]="component.icProduct"
+class="hidden sm:block"
+> </ic-icon>
+> No habia registrado el icProduct en el objeto component
+
+RROR Error: NG02100: InvalidPipeArgument: '1' for pipe 'TitleCasePipe'
+at invalidPipeArgumentError (common.mjs:4134:12)
+at TitleCasePipe.transform (common.mjs:4342:19)
+at pureFunction1Internal (core.mjs:22491:65)
+at Module.ɵɵpipeBind1 (core.mjs:22684:9)
+at ListTableComponent_ng_container_4_ng_container_1_td_2_div_1_Template
+El erro es por que la propiedad Gender o Sexo envía un 1 y espera un string, por que tiene que ser convertido a string con un arreglo de sexos.
+
+cuanto imprimse [object] en el navegador ---> JSON.stringify(data.data.items)
+
+
+
+CUANDO FORMATEO LA COMPUTADORA: 
+
+--------------------------------------------------------
+npm : El término 'npm' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de 
+acceso, compruebe que dicha ruta es correcta e inténtelo de nuevo.
+EN CMD SE INSTALA NODE JS : 
+npm install -g @angular/cli
+---------------------------------------------------------------
+User
+ng : No se puede cargar el archivo C:\Users\maril\AppData\Roaming\npm\ng.ps1 porque la ejecución de scripts está deshabilitada en este sistema. Para obtener más información, 
+consulta el tema about_Execution_Policies en https:/go.microsoft.com/fwlink/?LinkID=135170.
+Este es un problema común en sistemas Windows debido a la configuración de la Política de Ejecución de PowerShell.
+Abrir PowerShell como administrador: Haz clic con el botón derecho en el ícono del menú de inicio y selecciona "Windows PowerShell (Admin)" o "Windows Terminal (Admin)" si estás utilizando Windows Terminal.
+Cambiar la Política de Ejecución: Ejecuta el siguiente comando en PowerShell para cambiar temporalmente la Política de Ejecución y permitir la ejecución de scripts:
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Restaurar la Política de Ejecución (opcional): Una vez que hayas completado tus tareas con Angular CLI, puedes restaurar la Política de Ejecución a su estado original utilizando el siguiente comando:
+Set-ExecutionPolicy Restricted -Scope CurrentUser
+
+
