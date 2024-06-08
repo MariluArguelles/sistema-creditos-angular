@@ -21,6 +21,12 @@ export class PaymentService {
     return this._http.get<BaseApiResponse>(sql).pipe(
       map((data: BaseApiResponse) => {
         // Extrae y devuelve el array de items desde la respuesta
+
+      // Itera sobre cada registro y calcula totalPaid
+      data.data.items.forEach((p: Sales) => {
+        p.totalPaid = Math.round((p.total - p.balance) * 100) / 100;
+      });
+
         return data.data.items as Sales[];
       })
     );

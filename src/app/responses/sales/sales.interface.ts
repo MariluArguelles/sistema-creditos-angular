@@ -10,6 +10,7 @@ export interface Sales {
     paid?: boolean;
     saleItems?: SaleItems[];
     payments?: Payments[];
+    totalPaid?:number; //se usa para indicar el total de los pagos
     value?: string | undefined;  //Se usa para guardar un pago, aqui se guarda la Quantity de Payments ..
     paymentDate?: string | undefined;//Se usa para guardar un pago, aqui se guarda la PaymentDate de Payments ..
     state?: number;

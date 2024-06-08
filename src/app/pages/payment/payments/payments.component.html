@@ -103,8 +103,9 @@
                                             <button mat-raised-button (click)="onPay(item);" color="primary" style="margin-right: 20px;">Abonar</button>
                                         </ng-container>
 
-                                    <span style="margin-right: 20px;height:30px;">Total:
-                                        ${{item.total}}</span><span>Saldo: ${{item.balance}}</span>
+                                    <span style="margin-right: 20px;height:30px;">Total:${{item.total}}</span>
+                                    <span style="margin-right: 20px;height:30px;">Abonado:${{item.totalPaid}}</span>
+                                    <span>Saldo: ${{item.balance}}</span>
                                 </div>
                             </div>
                         </ng-container>

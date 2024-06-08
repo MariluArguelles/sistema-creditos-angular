@@ -71,7 +71,7 @@ export class PaymentsComponent implements OnInit {
 
     //SELECT CAST(REPLACE('99,999', ',', '') AS NUMERIC(7,2)) AS numeric_value;
     //límite del abono 500,000  --> numeric(9,2)
-
+    let total_Paid:number=0;
     let balanceFlag: number = 0;
     let quantity: number = 0;
     quantity = parseFloat(p.value);
@@ -122,6 +122,10 @@ export class PaymentsComponent implements OnInit {
             pagoOk().then(() => { // Esta función se ejecutará después de que la operación asíncrona haya terminado
               
               if(!err){ //si hay un error no actualiza saldos
+
+                total_Paid=Math.round((p.total - this.balance) * 100) / 100;
+                p.totalPaid = total_Paid;//mandar al objeto 'p' para que actualice las etiquetas
+              
                 let pre: Sales =
               {
                 customerId: this.customerId,
