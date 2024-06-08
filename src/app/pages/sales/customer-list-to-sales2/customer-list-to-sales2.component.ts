@@ -115,7 +115,7 @@ export class CustomerListToSales2Component implements OnInit {
      rowClick(e:any) {  
     let customer = e;
     let redirect = '';
-    if (this.page == 'Sales') redirect = '/customerSalesManager';
+    if (this.page == 'Sales') redirect = '/customerSalesManager2';
     else if (this.page == 'Payments') redirect = '/payments';
  
     this.router.navigate(

@@ -5,10 +5,10 @@ import { CustomLayoutComponent } from './custom-layout/custom-layout.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CustomerListToSalesComponent } from './pages/sales/customer-list-to-sales/customer-list-to-sales.component';
 import { CustomerListToSales2Component } from './pages/sales/customer-list-to-sales2/customer-list-to-sales2.component';
-import { CustomerSalesManagerComponent } from './pages/sales/customer-sales-manager/customer-sales-manager.component';
 import { PointOfSaleComponent } from './pages/sales/point-of-sale/point-of-sale.component';
 import { PaymentsComponent } from './pages/payment/payments/payments.component';
 import { AuthGuard } from '@shared/guards/auth.guard';
+import { CustomerSalesManager2Component } from './pages/sales/customer-sales-manager2/customer-sales-manager2.component';
 
 //toda página debe registrarse aquí
 const childrenRoutes: VexRoutes = [
@@ -55,9 +55,13 @@ const childrenRoutes: VexRoutes = [
     path: 'customerListToSales2',
     component: CustomerListToSales2Component
   },
-  {
+  /*{
     path: 'customerSalesManager',
     component: CustomerSalesManagerComponent
+  },*/
+  {
+    path: 'customerSalesManager2',
+    component: CustomerSalesManager2Component
   },
   {
     path: 'pointOfSale',
